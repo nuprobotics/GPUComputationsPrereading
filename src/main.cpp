@@ -94,6 +94,21 @@ int main() {
             OCL_SAFE_CALL(clGetDeviceInfo(device, CL_DEVICE_MAX_CLOCK_FREQUENCY, sizeof(cl_uint), &maxFreq, nullptr));
             std::cout << "Maximum configured clock frequency of the device in MHz: " << maxFreq << std::endl;
 
+            size_t maxWorkGroupSize;
+            OCL_SAFE_CALL(clGetDeviceInfo(device, CL_DEVICE_MAX_WORK_GROUP_SIZE, sizeof(size_t), &maxWorkGroupSize, nullptr));
+            std::cout << "Maximum number of work-items in a work-group: " << maxWorkGroupSize << std::endl;
+
+            cl_uint maxDims;
+            OCL_SAFE_CALL(clGetDeviceInfo(device, CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS, sizeof(cl_uint), &maxDims, nullptr));
+            std::cout << "Maximum dimensions that specify the global and local work-item IDs: " << maxDims << std::endl;
+
+            size_t maxSizePerDim[maxDims];
+            OCL_SAFE_CALL(clGetDeviceInfo(device, CL_DEVICE_MAX_WORK_ITEM_SIZES, sizeof(size_t) * maxDims, maxSizePerDim, nullptr));
+            std::cout << "Maximum number of work-items that can be specified in each dimension: ";
+            for (int i = 0; i < maxDims; ++i) {
+                std::cout << maxSizePerDim[i] << " ";
+            }
+
         }
     }
 
